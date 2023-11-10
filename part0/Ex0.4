@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant browser
+    participant server
+    participant user
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: get HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: get the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: get the JavaScript file
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "onto the first excercise", "date": "2023-11-09T15:25:35.583Z" }, ... ]
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes
+
+	user ->>browser: Write note into the text field
+	user ->>browser: Press the Save button
+
+	Note right of browser: The browser execute main.js to add the note and then execute function to submit the note to the server
+
+	browser ->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
